@@ -12,7 +12,7 @@ exports.create = (req, res) => {
     // Create Measurements
     const tandh = new TempAndHum({
       device: req.body.device,
-      datetime: req.body.datetime,
+      dateTime: req.body.dateTime,
       temperature: req.body.temperature,
       humidity: req.body.humidity
     });
