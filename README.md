@@ -17,13 +17,15 @@ CREATE TABLE `TempAndHum` (
 
 ### Database connection
 Create a directory called `config` and within that a file called `db.config.js` and add the following 
+```
 module.exports = {
     HOST: "<hostname where the database is located>",
     USER: "<database username>",
     PASSWORD: "<password of the above database user>",
     DB: "<database name>"
   };
-  
+```
+
 ## Running the API
 ```
 node server.js
