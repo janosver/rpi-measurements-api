@@ -96,24 +96,22 @@ Required URL parameter: `device=[string]`
 
 Response
 ```
-[{
+{
     "device": "<Name of the device which took the measurement>",
     "dateTime": "<Time of measurement in ISO format>",
     "temperature": <Temperature value in Celsius>,
     "humidity": <Humidity value in percentage>
-}]
+}
 ```
 
 Data example
 ```
-[
-  {
-    "device": "raspberrypizero",
-    "dateTime": "2020-12-29T17:06:17Z",
-    "temperature": 20.1,
-    "humidity": 47.4
-  }
-]
+{
+  "device": "raspberrypizero",
+  "dateTime": "2020-12-29T17:06:17Z",
+  "temperature": 20.1,
+  "humidity": 47.4
+}
 ```
 
 
