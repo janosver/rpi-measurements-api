@@ -30,6 +30,7 @@ module.exports = {
 
 ### Send measurements to the API which then saves these in the MySQL database table
 URL: /tempandhum
+
 Method: `POST`
 
 Data
@@ -54,6 +55,7 @@ Data example
 
 ### Get **all** measurements
 URL: /tempandhum
+
 Method: `GET`
 
 Response
@@ -86,8 +88,11 @@ Response example
 
 ### Get the **latest** measurement for a given **device**
 URL: /tempandhum
+
 Method: `GET`
-Required URL parameter: device=[string]
+
+Required URL parameter: `device=[string]`
+
 
 Response
 ```
