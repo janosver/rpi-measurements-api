@@ -28,7 +28,7 @@ module.exports = {
 
 ## Endpoints
 
-Send measurements to the API which then saves these in the MySQL database table
+### Send measurements to the API which then saves these in the MySQL database table
 URL: /tempandhum
 Method: `POST`
 
