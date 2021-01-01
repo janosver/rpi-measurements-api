@@ -1,4 +1,4 @@
-const TempAndHum = require("../models/measurements.model.js");
+const tempAndHum = require("../models/measurements.model.js");
 
 // Create and Save a new Measurement
 exports.create = (req, res) => {
@@ -10,7 +10,7 @@ exports.create = (req, res) => {
     }
   
     // Create Measurements
-    const tandh = new TempAndHum({
+    const tandh = new tempAndHum({
       device: req.body.device,
       dateTime: req.body.dateTime,
       temperature: req.body.temperature,
@@ -18,7 +18,7 @@ exports.create = (req, res) => {
     });
   
     // Save measurement in the database
-    TempAndHum.create(tandh, (err, data) => {
+    tempAndHum.create(tandh, (err, data) => {
       if (err)
         res.status(500).send({
           message:
@@ -30,7 +30,7 @@ exports.create = (req, res) => {
 
 // Retrieve all measurements from the database.
 exports.getAll = (req, res) => {
-    TempAndHum.getAll((err, data) => {
+    tempAndHum.getAll((err, data) => {
         if (err)
             res.status(500).send({
             message:
@@ -42,7 +42,7 @@ exports.getAll = (req, res) => {
 
 // Find the latest measurements for a device
 exports.findByDevice = (req, res) => {
-    TempAndHum.findByDevice(req.params.device, (err, data) => {
+    tempAndHum.findByDevice(req.params.device, (err, data) => {
         if (err) {
           if (err.kind === "not_found") {
             res.status(404).send({

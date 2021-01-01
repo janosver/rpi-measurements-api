@@ -4,7 +4,7 @@ API to store and retreive measurements made with a Raspberry Pi and stored in a 
 ## Configuration
 
 ### Database
-Create a new database using the following SQL script
+Create a new table using the following SQL script
 ```
 CREATE TABLE `TempAndHum` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
@@ -25,6 +25,92 @@ module.exports = {
     DB: "<database name>"
   };
 ```
+
+## Endpoints
+
+Send measurements to the API which then saves these in the MySQL database table
+URL: /tempandhum
+Method: `POST`
+
+Data
+```
+{
+    "device": "<Name of the device which took the measurement>",
+    "dateTime": "<Time of measurement in ISO format>",
+    "temperature": <Temperature value in Celsius>,
+    "humidity": <Humidity value in percentage>
+}
+```
+
+Data example
+```
+{
+    "device": "raspberrypizero",
+    "dateTime": "2020-12-28T17:06:17Z",
+    "temperature": 19.1,
+    "humidity": 56.4
+}
+```
+
+### Get **all** measurements
+URL: /tempandhum
+Method: `GET`
+
+Response
+```
+[{
+    "device": "<Name of the device which took the measurement>",
+    "dateTime": "<Time of measurement in ISO format>",
+    "temperature": <Temperature value in Celsius>,
+    "humidity": <Humidity value in percentage>
+}]
+```
+
+Response example
+```
+[
+  {
+    "device": "raspberrypizero",
+    "dateTime": "2020-12-28T17:06:17Z",
+    "temperature": 21.1,
+    "humidity": 56.4
+  },
+  {
+    "device": "raspberrypizero",
+    "dateTime": "2020-12-28T18:06:17Z",
+    "temperature": 21.5,
+    "humidity": 55.8
+  }
+]
+```
+
+### Get the **latest** measurement for a given **device**
+URL: /tempandhum
+Method: `GET`
+Required URL parameter: device=[string]
+
+Response
+```
+[{
+    "device": "<Name of the device which took the measurement>",
+    "dateTime": "<Time of measurement in ISO format>",
+    "temperature": <Temperature value in Celsius>,
+    "humidity": <Humidity value in percentage>
+}]
+```
+
+Data example
+```
+[
+  {
+    "device": "raspberrypizero",
+    "dateTime": "2020-12-29T17:06:17Z",
+    "temperature": 20.1,
+    "humidity": 47.4
+  }
+]
+```
+
 
 ## Running the API
 ```

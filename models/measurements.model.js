@@ -3,14 +3,14 @@ var dateFormat = require("dateformat");
 const sql = require("./db.js");
 
 // constructor
-const TempAndHum = function(tempandhum) {
+const tempAndHum = function(tempandhum) {
   this.device = tempandhum.device;
   this.dateTime = tempandhum.dateTime;
   this.temperature = tempandhum.temperature;
   this.humidity = tempandhum.humidity;
 };
 
-TempAndHum.create = (newMeasurement, result) => {
+tempAndHum.create = (newMeasurement, result) => {
   //Convert dateTime to a format MySQL can understand
   newMeasurement.dateTime = dateFormat(newMeasurement.dateTime ,"yyyy-mm-dd	HH:MM:ss");
   sql.query("INSERT INTO TempAndHum SET ?", newMeasurement, (err, res) => {
@@ -26,8 +26,8 @@ TempAndHum.create = (newMeasurement, result) => {
   });
 };
 
-TempAndHum.findByDevice = (device, result) => {
-  sql.query(`select Device, DateTime,Temperature,Humidity from TempAndHum where DateTime=(SELECT max(DateTime) FROM TempAndHum WHERE device = "${device}") and device = "${device}"`, (err, res) => {
+tempAndHum.findByDevice = (device, result) => {
+  sql.query(`select device, dateTime, temperature, humidity from TempAndHum where DateTime=(SELECT max(DateTime) FROM TempAndHum WHERE device = "${device}") and device = "${device}"`, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
@@ -45,8 +45,8 @@ TempAndHum.findByDevice = (device, result) => {
   });
 };
 
-TempAndHum.getAll = result => {
-  sql.query("SELECT Device, DateTime,Temperature,Humidity FROM TempAndHum", (err, res) => {
+tempAndHum.getAll = result => {
+  sql.query("SELECT device, dateTime, temperature, humidity FROM TempAndHum", (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);
@@ -59,4 +59,4 @@ TempAndHum.getAll = result => {
 };
 
 
-module.exports = TempAndHum;
+module.exports = tempAndHum;
