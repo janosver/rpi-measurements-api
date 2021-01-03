@@ -16,7 +16,7 @@ Create a directory called `config` and within that a file called `config.json` a
 }
 ```
 Example `config.json` file
-
+```
 {
     "apiUrl" : "http://raspberrypi",
     "apiPort" : "8000",
@@ -25,7 +25,7 @@ Example `config.json` file
     "dbPassword" : "a-randomly-generated-password-like_ZV_erZSu+CE;'35z",
     "dbName" : "rpi-measurements"
 }
-
+```
 
 ### Database
 Create a new table using the following SQL script
