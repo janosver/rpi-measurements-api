@@ -1,0 +1,264 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "rpi-measurements-api",
+    "version": "1.0",
+    "license": {
+      "name": "MIT"
+    },
+    "description": "API to store and retreive measurements made with a Raspberry Pi and stored in a MySQL database"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8000"
+    }
+  ],
+  "paths": {
+    "/tempandhum": {
+      "get": {
+        "summary": "Get all measurements",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "description": "",
+                  "minItems": 1,
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "device",
+                      "dateTime",
+                      "temperature",
+                      "humidity"
+                    ],
+                    "properties": {
+                      "device": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "dateTime": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "temperature": {
+                        "type": "number"
+                      },
+                      "humidity": {
+                        "type": "number"
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "raspberrypizero": {
+                    "value": {
+                      "device": "raspberrypizero",
+                      "dateTime": "2021-01-03T10:14:22.000Z",
+                      "temperature": 19.8,
+                      "humidity": 44.6
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-tempandhum"
+      },
+      "post": {
+        "summary": "Send measurements to the API which then saves these in the MySQL database table",
+        "tags": [],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/measurement"
+          }
+        },
+        "operationId": "post-tempandhum",
+        "description": "",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "description": "",
+                "type": "object",
+                "properties": {
+                  "device": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "dateTime": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "temperature": {
+                    "type": "number"
+                  },
+                  "humidity": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "device",
+                  "dateTime",
+                  "temperature",
+                  "humidity"
+                ]
+              },
+              "examples": {
+                "raspberrypizero": {
+                  "value": {
+                    "device": "raspberrypizero",
+                    "dateTime": "2021-01-03T09:20:34.000Z",
+                    "temperature": 20.1,
+                    "humidity": 45.1
+                  }
+                }
+              }
+            }
+          },
+          "description": ""
+        }
+      }
+    },
+    "/tempandhum/{device}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "device",
+          "in": "path",
+          "required": true,
+          "description": "Name of the device which took the measurement"
+        }
+      ],
+      "get": {
+        "summary": "Get the latest measurement for a given device",
+        "tags": [],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/measurement"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "",
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ]
+                },
+                "examples": {
+                  "raspberrypizero": {
+                    "value": {
+                      "message": "Not found measurments for device raspberrypizero."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-tempandhum-device",
+        "description": ""
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "measurement": {
+        "description": "",
+        "type": "object",
+        "properties": {
+          "device": {
+            "type": "string",
+            "minLength": 1
+          },
+          "dateTime": {
+            "type": "string",
+            "minLength": 1
+          },
+          "temperature": {
+            "type": "number"
+          },
+          "humidity": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "device",
+          "dateTime",
+          "temperature",
+          "humidity"
+        ],
+        "x-examples": {
+          "raspberrypizero": {
+            "device": "raspberrypizero",
+            "dateTime": "2020-12-28T17:06:17.000Z",
+            "temperature": 25.1,
+            "humidity": 56.4
+          }
+        },
+        "title": "measurement"
+      }
+    },
+    "responses": {
+      "measurement": {
+        "description": "Example response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "description": "",
+              "type": "object",
+              "properties": {
+                "device": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "dateTime": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "temperature": {
+                  "type": "number"
+                },
+                "humidity": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "device",
+                "dateTime",
+                "temperature",
+                "humidity"
+              ]
+            },
+            "examples": {
+              "raspberrypizero": {
+                "value": {
+                  "device": "raspberrypizero",
+                  "dateTime": "2021-01-03T09:20:34.000Z",
+                  "temperature": 20.1,
+                  "humidity": 45.1
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

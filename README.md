@@ -3,6 +3,30 @@ API to store and retreive measurements made with a Raspberry Pi and stored in a 
 
 ## Configuration
 
+### Essential configuration
+Create a directory called `config` and within that a file called `config.json` and add the following
+```
+{
+    "apiHost" : "<URL where the API will be running>",
+    "apiPort": "<port number>"
+    "dbHost" : "<hostname where the database is located>",
+    "dbUser" : "<database username>",
+    "dbPassword" : "<password of the above database user>",
+    "dbName" : "<database name>"
+}
+```
+Example `config.json` file
+
+{
+    "apiUrl" : "http://raspberrypi",
+    "apiPort" : "8000",
+    "dbHost" : "localhost",
+    "dbUser" : "raspberrydbuser",
+    "dbPassword" : "a-randomly-generated-password-like_ZV_erZSu+CE;'35z",
+    "dbName" : "rpi-measurements"
+}
+
+
 ### Database
 Create a new table using the following SQL script
 ```
@@ -15,18 +39,9 @@ CREATE TABLE `TempAndHum` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 ```
 
-### Database connection
-Create a directory called `config` and within that a file called `db.config.js` and add the following 
-```
-module.exports = {
-    HOST: "<hostname where the database is located>",
-    USER: "<database username>",
-    PASSWORD: "<password of the above database user>",
-    DB: "<database name>"
-  };
-```
-
 ## Endpoints
+
+A swagger documentation is available at the `/swagger` url (e.g. at http://raspberrypi:8000/swagger/) once the api is up and running. 
 
 ### Send measurements to the API which then saves these in the MySQL database table
 URL: /tempandhum
@@ -113,7 +128,6 @@ Data example
   "humidity": 47.4
 }
 ```
-
 
 ## Running the API
 ```
