@@ -10,7 +10,7 @@ const tempAndHum = function(tempandhum) {
   this.humidity = tempandhum.humidity;
 };
 
-tempAndHum.create = (newMeasurement, result) => {
+tempAndHum.savetempAndHum = (newMeasurement, result) => {
   //Convert dateTime to a format MySQL can understand
   newMeasurement.dateTime = dateFormat(newMeasurement.dateTime ,"yyyy-mm-dd	HH:MM:ss");
   sql.query("INSERT INTO TempAndHum SET ?", newMeasurement, (err, res) => {
@@ -57,6 +57,5 @@ tempAndHum.getAll = result => {
     result(null, res);
   });
 };
-
 
 module.exports = tempAndHum;

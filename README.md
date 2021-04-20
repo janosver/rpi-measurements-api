@@ -35,7 +35,8 @@ CREATE TABLE `TempAndHum` (
   `Device` varchar(50) NOT NULL COMMENT 'Name of the device which took the measurement',
   `DateTime` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Time of measurement (sent by the device)',
   `Temperature` float NOT NULL COMMENT 'Temperature in Celsius',
-  `Humidity` float NOT NULL COMMENT 'Humidity in percentage'
+  `Humidity` float NOT NULL COMMENT 'Humidity in percentage',
+  primary key (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 ```
 
