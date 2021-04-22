@@ -3,7 +3,7 @@ var dateFormat = require("dateformat");
 const tempAndHum = require("../models/tempandhum.measurments.model");
 const soilMoisture = require("../models/soilmoisture.measurments.model.js");
 
-// Save a new Measurement
+// Save a new temperature and humidity measurement
 exports.saveTempAndHum = (req, res) => {
     // Validate request
     if (!req.body) {
@@ -31,19 +31,23 @@ exports.saveTempAndHum = (req, res) => {
     });
   };
 
-// Retrieve all measurements from the database.
+// Retrieve all temperature and humidity measurements from the database.
 exports.getAllTempAndHum = (req, res) => {
-    tempAndHum.getAll((err, data) => {
-        if (err)
-            res.status(500).send({
-            message:
-                err.message || "Some error occurred while retrieving measurements."
-            });
-        else res.send(data);
-        });  
+  var fromDate = new Date();
+  fromDate.setHours(fromDate.getHours() - 48);
+  fromDate = dateFormat(fromDate ,"yyyy-mm-dd	HH:MM:ss");
+
+  tempAndHum.getAll(fromDate, (err, data) => {
+      if (err)
+          res.status(500).send({
+          message:
+              err.message || "Some error occurred while retrieving measurements."
+          });
+      else res.send(data);
+      });  
 };
 
-// Find the latest measurements for a device
+// Find the latest temperature and humidity measurements for a device
 exports.findByDevice = (req, res) => {
   tempAndHum.findByDevice(req.params.device, (err, data) => {
         if (err) {
@@ -60,7 +64,7 @@ exports.findByDevice = (req, res) => {
       });
 };
 
-// Save a new Measurement
+// Save a new soil moisture measurement
 exports.saveSoilMoisture = (req, res) => {
   // Validate request
   if (!req.body) {
@@ -69,7 +73,7 @@ exports.saveSoilMoisture = (req, res) => {
     });
   }
 
-   // Save new temperature and humidity measurements
+   // Save new soil moisture measurements
    const soilm = new soilMoisture({
     device: req.body.device,
     dateTime: req.body.dateTime,
@@ -78,7 +82,7 @@ exports.saveSoilMoisture = (req, res) => {
     moistureLevel: req.body.moistureLevel
   });
   
-    // Save temperature and humidity measurement in the database
+    // Save soil moisture measurement in the database
     soilMoisture.save(soilm, (err, data) => {
       if (err)
         res.status(500).send({
@@ -95,7 +99,7 @@ exports.getAllSoilMoisture = (req, res) => {
   fromDate.setHours(fromDate.getHours() - 48);
   fromDate = dateFormat(fromDate ,"yyyy-mm-dd	HH:MM:ss");
 
-  soilMoisture.getAll(fromDate,(err, data) => {
+  soilMoisture.getAll(fromDate, (err, data) => {
       if (err)
           res.status(500).send({
           message:

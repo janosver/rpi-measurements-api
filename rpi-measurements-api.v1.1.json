@@ -1,0 +1,363 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "rpi-measurements-api",
+    "version": "1.1",
+    "license": {
+      "name": "MIT",
+      "url": "https://github.com/janosver/rpi-measurements-api/blob/main/LICENSE"
+    },
+    "description": "API to store and retreive measurements made with a Raspberry Pi and stored in a MySQL database",
+    "contact": {
+      "name": "Janos Ver",
+      "url": "https://janosver.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8000"
+    }
+  ],
+  "paths": {
+    "/tempandhum": {
+      "get": {
+        "summary": "Get all temperature and humidity measurements",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/tempandhum-measurement"
+          }
+        },
+        "operationId": "get-tempandhum",
+        "description": "Get all temperature and humidity measurements taken in the last 48 hours",
+        "tags": [
+          "Temperature and humidity"
+        ]
+      },
+      "post": {
+        "summary": "Send temperature and humidity measurement",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/tempandhum-measurement"
+          }
+        },
+        "operationId": "post-tempandhum",
+        "description": "Send temperature and humidity measurements to the API which then saves these in the MySQL database",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "description": "",
+                "type": "object",
+                "properties": {
+                  "device": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "dateTime": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "temperature": {
+                    "type": "number"
+                  },
+                  "humidity": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "device",
+                  "dateTime",
+                  "temperature",
+                  "humidity"
+                ]
+              },
+              "examples": {
+                "raspberrypizero": {
+                  "value": {
+                    "device": "raspberrypizero",
+                    "dateTime": "2021-01-03T09:20:34.000Z",
+                    "temperature": 20.1,
+                    "humidity": 45.1
+                  }
+                }
+              }
+            }
+          },
+          "description": ""
+        },
+        "tags": [
+          "Temperature and humidity"
+        ]
+      }
+    },
+    "/tempandhum/{device}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "device",
+          "in": "path",
+          "description": "Name of the device which took the measurement",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Get the latest temperature and humidity measurement for a given device",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/tempandhum-measurement"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "",
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ]
+                },
+                "examples": {
+                  "raspberrypizero": {
+                    "value": {
+                      "message": "Not found measurments for device raspberrypizero."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-tempandhum-device",
+        "description": "Get the latest temperature and humidity measurement for a given device",
+        "tags": [
+          "Temperature and humidity"
+        ]
+      }
+    },
+    "/soilmoisture": {
+      "get": {
+        "summary": "Get all soil moisture measurements",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/soilmoisture-measurement"
+          }
+        },
+        "operationId": "get-soilmoisture",
+        "description": "Get all soil moisture measurements taken in the last 48 hours",
+        "tags": [
+          "Soil moisture"
+        ]
+      },
+      "parameters": [],
+      "post": {
+        "summary": "Send soil moisture measurement",
+        "operationId": "post-soilmoisture",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/soilmoisture-measurement"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "description": "",
+                "type": "object",
+                "properties": {
+                  "device": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "dateTime": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "sensor": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "voltage": {
+                    "type": "number"
+                  },
+                  "moistureLevel": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "device",
+                  "dateTime",
+                  "sensor",
+                  "voltage"
+                ]
+              },
+              "examples": {
+                "raspberrypizero": {
+                  "value": {
+                    "device": "raspberrypizero",
+                    "dateTime": "2020-02-07T17:01:12Z",
+                    "sensor": "A0",
+                    "voltage": 1.52,
+                    "moistureLevel": 91.14
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Send soil moisture measurements to the API which then saves these in the MySQL database",
+        "tags": [
+          "Soil moisture"
+        ]
+      }
+    },
+    "/soilmoisture/{device}/{sensor}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "device",
+          "in": "path",
+          "required": true,
+          "description": "Name of the device which took the measurement"
+        },
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "sensor",
+          "in": "path",
+          "required": true,
+          "description": "Name of the sensor which took the measurement"
+        }
+      ],
+      "get": {
+        "summary": "Get the latest soil moisture measurement for a given sensor of a given device",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/soilmoisture-measurement"
+          }
+        },
+        "operationId": "get-soilmoisture-device-sensor",
+        "description": "Get the latest soil moisture measurement for a given sensor of a given device",
+        "tags": [
+          "Soil moisture"
+        ]
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "tempandhum-measurement": {
+        "description": "Example response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "description": "",
+              "type": "object",
+              "properties": {
+                "device": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "dateTime": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "temperature": {
+                  "type": "number"
+                },
+                "humidity": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "device",
+                "dateTime",
+                "temperature",
+                "humidity"
+              ]
+            },
+            "examples": {
+              "raspberrypizero": {
+                "value": {
+                  "device": "raspberrypizero",
+                  "dateTime": "2021-01-03T09:20:34.000Z",
+                  "temperature": 20.1,
+                  "humidity": 45.1
+                }
+              }
+            }
+          }
+        }
+      },
+      "soilmoisture-measurement": {
+        "description": "Example response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "description": "",
+              "type": "object",
+              "properties": {
+                "device": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "dateTime": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "sensor": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "voltage": {
+                  "type": "number"
+                },
+                "moistureLevel": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "device",
+                "dateTime",
+                "sensor",
+                "voltage"
+              ]
+            },
+            "examples": {
+              "raspberrypizero": {
+                "value": {
+                  "device": "raspberrypizero",
+                  "dateTime": "2021-04-18T08:15:09.000Z",
+                  "sensor": "A0",
+                  "voltage": 1.46,
+                  "moistureLevel": 95.85
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {},
+    "parameters": {}
+  },
+  "tags": [
+    {
+      "name": "Soil moisture"
+    },
+    {
+      "name": "Temperature and humidity"
+    }
+  ]
+}

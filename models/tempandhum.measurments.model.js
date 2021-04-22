@@ -45,8 +45,8 @@ tempAndHum.findByDevice = (device, result) => {
   });
 };
 
-tempAndHum.getAll = result => {
-  sql.query("SELECT device, dateTime, temperature, humidity FROM TempAndHum", (err, res) => {
+tempAndHum.getAll = (fromDate, result) => {
+  sql.query(`SELECT device, dateTime, temperature, humidity FROM TempAndHum  WHERE dateTime>="${fromDate}"`, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);
