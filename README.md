@@ -154,7 +154,7 @@ Data example
 }
 ```
 
-### Send temperature and humidity measurements to the API which then saves these in the MySQL database table
+### Send temperature and humidity measurements to the API which then saves these in the TempAndHum MySQL database table
 URL: /tempandhum
 
 Method: `POST`
