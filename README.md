@@ -1,5 +1,5 @@
 # rpi-measurements-api
-API to store and retreive measurements made with a Raspberry Pi
+API to store and retreive temperature, humidity and soil moisture measurements
 
 ## Configuration
 
@@ -28,6 +28,7 @@ Example `config.json` file
 ```
 
 ### Database
+
 Create new tables using the following SQL scripts to store
  
 * Temperature and humidity data  
